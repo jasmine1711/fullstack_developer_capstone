@@ -9,7 +9,8 @@ const Login = ({ onClose }) => {
   const [password, setPassword] = useState("");
   const [open,setOpen] = useState(true)
 
-  let login_url = window.location.origin+"/djangoapp/login";
+let login_url = "/djangoapp/login/";  
+
 
   const login = async (e) => {
     e.preventDefault();
@@ -20,19 +21,19 @@ const Login = ({ onClose }) => {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            "userName": userName,
+            "username": userName,
             "password": password
         }),
     });
     
     const json = await res.json();
-    if (json.status != null && json.status === "Authenticated") {
-        sessionStorage.setItem('username', json.userName);
-        setOpen(false);        
-    }
-    else {
-      alert("The user could not be authenticated.")
-    }
+    if (res.ok && json.message === "Login successful") {
+    sessionStorage.setItem('username', userName);
+    setOpen(false);        
+} else {
+    alert(json.message || "The user could not be authenticated.");
+}
+
 };
 
   if (!open) {
