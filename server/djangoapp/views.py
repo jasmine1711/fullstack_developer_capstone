@@ -85,10 +85,31 @@ def register_user(request):
 # a list of dealerships
 # def get_dealerships(request):
 # ...
+from django.views.generic import TemplateView
+
+class FrontendAppView(TemplateView):
+    template_name = 'index.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 # Create a `get_dealer_reviews` view to render the reviews of a dealer
 # def get_dealer_reviews(request,dealer_id):
 # ...
+from djangoapp.restapis import get_request
+
+# Example: Fetch dealers by state
+def get_dealers_by_state(state):
+    endpoint = "/fetchDealers"
+    dealers = get_request(endpoint, state=state)
+    return dealers
+
+# Example: Fetch reviews by dealer ID
+def get_reviews_by_dealer_id(dealer_id):
+    endpoint = "/fetchReviews"
+    reviews = get_request(endpoint, dealerId=dealer_id)
+    return reviews
+
 
 # Create a `get_dealer_details` view to render the dealer details
 # def get_dealer_details(request, dealer_id):
